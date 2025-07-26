@@ -80,9 +80,9 @@ const Header = () => {
                            <div className="header__info-user tpcolor__yellow ml-10">
                               <Link href={isLoggedIn ? "/my-profile" : "/login"}><i className="icon-user"></i></Link>
                            </div>
-                           <div className="header__info-wishlist tpcolor__greenish ml-10">
+                           {/* <div className="header__info-wishlist tpcolor__greenish ml-10">
                               <Link href="/wishlist"><i className="icon-heart icons"></i></Link>
-                           </div>
+                           </div> */}
                            <div className="header__info-cart tpcolor__oasis ml-10 tp-cart-toggle">
                               <button onClick={() => setIsCartOpen(true)}>
                                  <i>
@@ -110,7 +110,7 @@ const Header = () => {
                   <div className="col-lg-4 col-md-4 col-6 col-sm-4">
                      <div className="header__logo text-center">
                         <Link href="/">
-                           <Image src={logo} alt="logo" style={{height: 'auto'}}/>
+                           <Image src={logo} alt="logo" style={{height: '50px',width:'100px'}}/>
                         </Link>
                      </div>
                   </div>
@@ -122,9 +122,9 @@ const Header = () => {
                         <div className="header__info-user tpcolor__yellow ml-10 d-none d-sm-block">
                            <Link href={isLoggedIn ? "/my-profile" : "/login"}><i className="icon-user"></i></Link>
                         </div>
-                        <div className="header__info-wishlist tpcolor__greenish ml-10 d-none d-sm-block">
+                        {/* <div className="header__info-wishlist tpcolor__greenish ml-10 d-none d-sm-block">
                            <Link href="/wishlist"><i className="icon-heart icons"></i></Link>
-                        </div>
+                        </div> */}
                         <div className="header__info-cart tpcolor__oasis ml-10 tp-cart-toggle">
                            <button onClick={() => setIsCartOpen(true)}>
                               <i><Image src={cart_icon} alt="icon"/></i>

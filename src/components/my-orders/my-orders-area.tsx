@@ -46,8 +46,6 @@ interface Order {
 
 export default function MyOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
-   const steps = ['Order Placed', 'Processing', 'Shipped', 'Out for Delivery', 'Delivered'];
-  const currentStep = 2;
 
   useEffect(() => {
     const user_id = localStorage.getItem("user_id");
@@ -75,88 +73,115 @@ export default function MyOrdersPage() {
       <main>
         <section className="my-orders-area pt-10 pb-20">
           <div className="container mx-auto px-4">
-            <h2 className="text-2xl font-bold mb-10">My Orders</h2>
+            <center>
+            <h3 className="tpdetails__title" >My Orders</h3>
+
+            </center>
             {orders.length === 0 ? (
               <p className="text-gray-600">No orders found.</p>
             ) : (
               orders.map((orderBlock, index) => (
                 <div
                   key={index}
-                  className="mb-10 pl-10 p-6 bg-white shadow-md rounded-xl border border-gray-200"
+                  className="mb-50 pl-20 p-6 bg-white shadow-md rounded-xl border border-gray-200"
                 >
-                  <div className="mb-4">
-                    <h3 className="text-xl font-semibold">
-                      Order #{orderBlock.order.id}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      Placed on: {new Date(orderBlock.order.created_at).toLocaleString()}
-                    </p>
-                    <p className="text-sm">
-                      <strong>Status:</strong>{" "}
-                      <span className="capitalize">{orderBlock.order.status}</span>{" "}
-                      | <strong>Payment:</strong>{" "}
-                      <span className="capitalize">{orderBlock.order.payment_status}</span>
-                       | <strong>Payment Method:</strong>{" "}
-                      <span className="capitalize">Cash</span>
-                    </p>
-                    <p className="text-sm">
-                      <strong>Total:</strong> ₹{orderBlock.order.total_amount}
-                    </p>
-                    <p className="text-sm">
-                      <strong>Customer:</strong>{" "}
-                      {orderBlock.order.first_name} {orderBlock.order.last_name} (
-                      {orderBlock.order.phone}, {orderBlock.order.email})
-                    </p>
-                    <p className="text-sm">
-                      <strong>Address:</strong> {orderBlock.order.street_address},{" "}
-                      {orderBlock.order.apartment}, {orderBlock.order.city},{" "}
-                      {orderBlock.order.state}, {orderBlock.order.country} -{" "}
-                      {orderBlock.order.postal_code}
-                    </p>
-                    <p className="text-sm italic">
-                      <strong>Notes:</strong> {orderBlock.order.order_notes}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 ">
-                    {orderBlock.items.map((item) => (
-                      <div
-                        key={item.order_item_id}
-                        className="border p-4 rounded-lg shadow-sm bg-gray-50"
-                      >
-                        <img
-                          src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.variant_image}`}
-                          alt={item.product_name}
-                          className="w-full h-40 object-cover rounded mb-3"
-                          width={100}
-                            height={100}
-                        />
-                        <h4 className="font-semibold">{item.product_name}</h4>
-                        <p className="text-sm text-gray-600">
-                          Category: {item.category_name} / {item.subcategory_name}
+                  <center>
+                     <h6 className="font-semibold mb-2 mt-10">
+                          Order #{orderBlock.order.id}
+                        </h6>
+                  </center>
+                  {/* Order Summary + Address */}
+                  <div className="flex flex-col md:flex-row justify-between gap-6 row bg-white  p-4 rounded  ">
+                      {/* Order Summary - LEFT */}
+                      <div className="w-full md:flex-[2] col-md-6" >
+                       
+                        <p className="text-sm text-gray-500 mb-2">
+                          Placed on: {new Date(orderBlock.order.created_at).toLocaleString()}
                         </p>
-                        {/* <p className="text-sm">
-                          <strong>Color:</strong> {item.color} | <strong>Size:</strong> {item.size}
-                        </p> */}
-                        <p className="text-sm">
-                          <strong>Qty:</strong> {item.quantity}
+                        <p className="text-sm mb-1">
+                          <strong>Status:</strong>{" "}
+                          <span className="capitalize">{orderBlock.order.status}</span> |{" "}
+                          <strong>Payment:</strong>{" "}
+                          <span className="capitalize">{orderBlock.order.payment_status}</span> |{" "}
+                          <strong>Payment Method:</strong> Cash
                         </p>
-                        <p className="text-sm">
-                          <strong>Price:</strong>{" "}
-                          {/* <span className="line-through text-red-500">₹{item.price}</span>{" "} */}
-                          <span className="text-green-600">₹{item.discounted_price}</span>
+                        <p className="text-sm mb-1">
+                          <strong>Total:</strong> ₹{orderBlock.order.total_amount}
+                        </p>
+                        <p className="text-sm mb-1">
+                          <strong>Customer:</strong> {orderBlock.order.first_name}{" "}
+                          {orderBlock.order.last_name} ({orderBlock.order.phone},{" "}
+                          {orderBlock.order.email})
+                        </p>
+                        <p className="text-sm italic">
+                          <strong>Notes:</strong> {orderBlock.order.order_notes || "None"}
                         </p>
                       </div>
-                    ))}
+
+                      {/* Address Block - RIGHT */}
+                      <div className="  rounded w-full md:flex-[1] bg-gray-50 p-4 rounded-md border col-md-6">
+                        <h4 className="font-semibold text-sm mb-2">Shipping Address</h4>
+                        <p className="text-sm leading-5 text-gray-700">
+                          {orderBlock.order.street_address}
+                          {orderBlock.order.apartment ? `, ${orderBlock.order.apartment}` : ""}
+                          <br />
+                          {orderBlock.order.city}, {orderBlock.order.state}
+                          <br />
+                          {orderBlock.order.country} - {orderBlock.order.postal_code}
+                        </p>
+                      </div>
                   </div>
-                 
-                  
+
+
+                  {/* Order Items Table */}
+                  <div className="mt-6 overflow-x-auto mt-10  border shadow p-4 rounded">
+                    <table className="w-full text-sm " width={"100%"}>
+                      <thead className="bg-gray-100 text-left">
+                        <tr>
+                          <th className="p-2 border">Image</th>
+                          <th className="p-2 border">Product</th>
+                          <th className="p-2 border">Category</th>
+                          <th className="p-2 border">Qty</th>
+                          <th className="p-2 border">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orderBlock.items.map((item) => (
+                          <tr key={item.order_item_id} className="text-center">
+                            <td className="p-2 border">
+                              <img
+                                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${item.variant_image}`}
+                                alt={item.product_name}
+                                className="mx-auto rounded border"
+                                width={100}
+                                height={100}
+                                style={{
+                                  width: "100px",
+                                  height: "100px",
+                                  objectFit: "cover",
+                                }}
+                              />
+                            </td>
+                            <td className="p-2 border font-medium">
+                              {item.product_name}
+                            </td>
+                            <td className="p-2 border">
+                              {item.category_name} / {item.subcategory_name}
+                            </td>
+                            <td className="p-2 border">{item.quantity}</td>
+                            <td className="p-2 border text-green-600">
+                              ₹{item.discounted_price}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               ))
             )}
           </div>
         </section>
-        
       </main>
     </Wrapper>
   );
