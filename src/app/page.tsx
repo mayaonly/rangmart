@@ -11,6 +11,7 @@ import AllProducts from "@/components/product/home/all-products";
 import BlogItems from "@/components/blogs/blog-items";
 import FeatureArea from "@/components/feature/feature-area";
 import Footer from "@/layouts/footer/footer";
+import MySlider from '@/components/PromoSlider';
 
 export const metadata: Metadata = {
   title: "RangMart"
@@ -25,13 +26,15 @@ export default function HomePage() {
 
       <main>
         {/* hero start */}
-        <HeroBanner />
+        {/* <HeroBanner /> */}
         {/* hero end */}
 
+         <MySlider />
+
         {/* category start */}
-        <section className="category-area grey-bg pb-40">
+        <section className="category-area grey-bg pb-40 pt-50">
           <div className="container">
-            <CategoryArea cls="category-active"/>
+            <CategoryArea cls="category-active "/>
           </div>
         </section>
         {/* category end */}
