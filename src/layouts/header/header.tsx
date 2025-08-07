@@ -55,7 +55,7 @@ const Header = () => {
                      <div className="col-xl-3">
                         <div className="header__logo">
                            <Link href="/">
-                              <Image src={logo} alt="logo" style={{height: '80px',width:'150px'}}/>
+                              <Image src={logo} alt="logo" style={{height: '80px',width:'100px'}}/>
                            </Link>
                         </div>
                      </div>
