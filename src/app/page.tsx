@@ -12,6 +12,7 @@ import BlogItems from "@/components/blogs/blog-items";
 import FeatureArea from "@/components/feature/feature-area";
 import Footer from "@/layouts/footer/footer";
 import MySlider from '@/components/PromoSlider';
+import CategoryProductSection from '@/components/CategoryProductSection';
 
 export const metadata: Metadata = {
   title: "RangMart"
@@ -38,6 +39,8 @@ export default function HomePage() {
           </div>
         </section>
         {/* category end */}
+        
+        <CategoryProductSection />
 
         {/* weekly product start */}
         <ProductArea />
