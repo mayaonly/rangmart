@@ -1,72 +1,94 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import API from '@/utils/api';
-import { IProductData } from '@/types/product-d-t';
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
 
 const imgStyle = {
-  width: "100%",
-  height: "100%",
+  width: '100%',
+  height: 'auto',
+  objectFit: 'contain',
 };
 
-const CategoryProductSection = () => {
-  const [products, setProducts] = useState<IProductData[]>([]);
+interface Subcategory {
+  id: number | string;
+  category_id: number | string;
+  name: string;
+  slug: string;
+  image: string;
+}
+
+interface Category {
+  id: number | string;
+  name: string;
+  slug: string;
+  image: string;
+  subcategories: Subcategory[];
+}
+
+const CategorySubcategorySection = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await API.get('/products');
-        setProducts(response.data.products || []);
+        const res = await API.get('/subcategories_and_categories');
+        setCategories(res.data || []);
       } catch (err) {
-        console.error('Failed to fetch products', err);
+        console.error('Failed to fetch categories', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
-  // Group products by subcategory
-  const groupedBySubcategory = products.reduce((acc: any, product) => {
-    const subcat = product.subcategory_name || 'Others';
-    if (!acc[subcat]) acc[subcat] = [];
-    acc[subcat].push(product);
-    return acc;
-  }, {});
+  if (loading) return <p>Loading...</p>;
 
   return (
-    <section className="category-product-section pb-100 pt-50">
+    <section className="category-subcategory-section pb-100 pt-50">
       <div className="container">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          Object.entries(groupedBySubcategory).map(([subcategory, items]: any) => (
-            <div key={subcategory} className="mb-50">
-              <h3 className="mb-30">{subcategory.toUpperCase()}</h3>
-              <div className="row">
-                {items.slice(0, 8).map((item: IProductData) => (
-                  <div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4" key={item.id}>
-                    <div className="product-card text-center ">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${item.image_url}`}
-                        alt="product-img"
-                        width={217}
-                        height={217}
-                        style={imgStyle}
-                      />
-                      <p className="product-name">{item.name}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+        {categories.map(category => (
+          <div key={category.id} className="mb-50">
+            {/* Category Title with Icon */}
+            <div className="d-flex align-items-center mb-4">
+              <Image
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${category.image}`}
+                alt={category.name}
+                width={50}
+                height={50}
+                style={{ objectFit: 'contain' }}
+              />
+              <h3 className="ms-3">{category.name}</h3>
             </div>
-          ))
-        )}
+
+            {/* Subcategories */}
+            <div className="row">
+              {category.subcategories.map(sub => (
+                <div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4" key={sub.id}>
+                  <div className="subcategory-card text-center p-3 border rounded">
+                    <Link href={`/search?category=${sub.slug}`}>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${sub.image}`}
+                        alt={sub.name}
+                        width={120}
+                        height={120}
+                        style={{ objectFit: 'contain' } as React.CSSProperties}
+                      />
+                      <p className="mt-2">{sub.name}</p>
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
-export default CategoryProductSection;
+export default CategorySubcategorySection;

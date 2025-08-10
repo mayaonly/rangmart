@@ -92,7 +92,7 @@ const SearchArea = () => {
           <div className="col-xl-12 col-lg-12 col-md-12">
             <div className="tpshop__details">
               <div className="tpshop__category">
-                <CategoryArea cls="inner-category-two" showCount={false} />
+                {/* <CategoryArea cls="inner-category-two" showCount={false} /> */}
               </div>
 
               <div className="product__filter-content mb-30">

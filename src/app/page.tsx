@@ -33,11 +33,12 @@ export default function HomePage() {
          <MySlider />
 
         {/* category start */}
-        <section className="category-area grey-bg pb-40 pt-50">
+        {/* <section className="category-area grey-bg pb-40 pt-50">
           <div className="container">
             <CategoryArea cls="category-active "/>
           </div>
-        </section>
+        </section> */}
+        
         {/* category end */}
         
         <CategoryProductSection />

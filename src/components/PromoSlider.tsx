@@ -1,22 +1,49 @@
 'use client';
-import React from 'react';
+
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import './MySlider.css'; 
+import './MySlider.css';
+import API from '@/utils/api';
 
-const promoBanners = [
-  { id: 1, image: '/assets/img/banner/1.jpg' },
-  { id: 2, image: '/assets/img/banner/2.jpg' },
-  { id: 3, image: '/assets/img/banner/3.jpg' },
-  { id: 4, image: '/assets/img/banner/4.jpg' },
-  { id: 5, image: '/assets/img/banner/5.jpg' },
-  { id: 6, image: '/assets/img/banner/6.jpg' },
-];
+type Banner = { id: number; image: string };
 
 const PromoSlider = () => {
+  const [promoBanners, setPromoBanners] = useState<Banner[]>([]);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const res = await API.get('/homepage');
+        console.log('PromoSlider API response:', res.data);
+
+        const baseUrl = process.env.NEXT_PUBLIC_IMAGE_URL || '';
+        const banners: Banner[] = [
+          res.data.box_img_1,
+          res.data.box_img_2,
+          res.data.box_img_3,
+          res.data.box_img_4,
+          res.data.box_img_5,
+          res.data.box_img_6,
+        ]
+          .filter(Boolean) // remove any missing images
+          .map((img: string, idx: number) => ({
+            id: idx + 1,
+            image: `${baseUrl}${img}`,
+          }));
+
+        setPromoBanners(banners);
+      } catch (error) {
+        console.error('Failed to fetch promo banners:', error);
+      }
+    };
+
+    fetchBanners();
+  }, []);
+
   return (
     <div className="w-full py-8 bg-white relative mt-10">
       <div className="container-fluid mx-auto px-4">
