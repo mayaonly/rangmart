@@ -70,7 +70,7 @@ const CategorySubcategorySection = () => {
               {category.subcategories.map(sub => (
                 <div className="col-xl-2 col-lg-3 col-md-4 col-6 mb-4" key={sub.id}>
                   <div className="subcategory-card text-center p-3 border rounded">
-                    <Link href={`/search?category=${sub.slug}`}>
+                    <Link href={`/search?category=${sub.name}`}>
                       <Image
                         src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${sub.image}`}
                         alt={sub.name}
